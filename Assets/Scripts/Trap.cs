@@ -11,7 +11,27 @@ public class Trap : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log($"{other.name}가 함정을 밟음");
-        anim.SetTrigger("TrapActive");
+        if(other.CompareTag("Player"))
+        {
+            anim.SetTrigger("TrapActive");  
+            IDead dead = other.gameObject.GetComponent<IDead>();
+            if(dead!=null)
+            {
+                dead.OnDead();
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            anim.SetTrigger("TrapDeactive");
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 0.5f);
     }
 }

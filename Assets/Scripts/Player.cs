@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]   // 이 스크립트를 가진 게임오브젝트는 무조건 Animator가 있다(없으면 만든다)
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDead
 {
     public float moveSpeed = 10.0f;     // 플레이어 이동 속도 (기본값 1초에 10)
     public float spinSpeed = 360.0f;    // 플레이어 회전 속도 (기본값 1초에 한바퀴)
@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private Animator anim = null;       // 에니메이터 컴포넌트
     private PlayerAction pc = null;   // 입력 처리용 클래스
     private Rigidbody rigid = null;
+    private bool isAlive = true;
     
     private void Awake()                
     {
@@ -41,13 +42,16 @@ public class Player : MonoBehaviour
     */
     private void FixedUpdate() 
     {
+        //
         rigid.MovePosition(rigid.position + transform.forward * moveInput * moveSpeed * Time.fixedDeltaTime); //  현재위치 + 움직이고픈 정도 
+        //
         rigid.MoveRotation(rigid.rotation * Quaternion.AngleAxis(spinInput*spinSpeed*Time.fixedDeltaTime, Vector3.up));
     }
 
     //WSAD를 눌렀을 때 실행될 함수
     public void MovePlayer(InputAction.CallbackContext context)
     {
+        //if(isAlive)
         Vector2 input = context.ReadValue<Vector2>();   // 입력값을 받아서 회전 정도랑 이동 정도를 받아옴
         spinInput = input.x;    //A(1) D(-1)
         moveInput = input.y;    //W(1) S(-1)
@@ -64,6 +68,31 @@ public class Player : MonoBehaviour
     public void UseItem(InputAction.CallbackContext context)
     {
         anim.SetTrigger("OnUseItem");
+    }
+    public void OnDead()
+    {
+        if(isAlive)
+        {
+            Debug.Log("Player Die");
+            // 사망 연출
+
+            //rigid.AddTorque(new Vector3(-90.0f,0,0)*10.0f);
+            rigid.constraints = RigidbodyConstraints.None; 
+            rigid.drag = 0; // 마찰력 0으로
+            rigid.angularDrag = 0.05f;
+            //rigid.AddForce(-transform.forward * 3.0f);
+            rigid.AddForceAtPosition(-transform.forward*3.0f, transform.position+new Vector3(0,1.5f,0)); //뒤방향으로. 글고 피봇이 발에 있어서 1.5 높은 지점 밀어줌
+            //collider.radius = 0.2f;
+            isAlive= false;
+        }
+        
+
+        // 중복 사망 방지
+
+        // 죽었을 때 이동 처리 안함 
+        spinInput = 0;
+        moveInput = 0;
+        anim.SetBool("isMove",false);
     }
     
 }
