@@ -6,8 +6,8 @@ public class Airplane : MonoBehaviour
 {
     public bool propellerOn = false; // true면 프로펠러 돌아가고 fasle면 안돌아감
     //private GameObject propObj = null;
-    private Transform propTransform = null;
-    private float propSpeed = 720.0f;
+    private Transform propTransform = null; // 프로펠러의 트랜스// 프로펠러의 트랜스폼을 돌리기
+    private float propSpeed = 720.0f; //1초에 2바퀴 돌리기가 기본
     public float moveSpeed = 3.0f;
     public Transform[] waypoints = null;
 
@@ -39,7 +39,7 @@ public class Airplane : MonoBehaviour
         }
         if (propellerOn)
         {
-            propTransform.Rotate(0, propSpeed * Time.deltaTime, 0);// 초당 두바퀴
+            propTransform.Rotate(0, propSpeed * Time.deltaTime, 0);// 프로펠러의 트랜스폼을 돌리기
         }
 
     }

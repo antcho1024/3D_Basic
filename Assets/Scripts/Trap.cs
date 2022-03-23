@@ -9,6 +9,7 @@ public class Trap : MonoBehaviour
     {
         anim= GetComponent<Animator>();
     }
+    // 내 게임 오브젝트가 가지고 있는 트리거로 설정된 컬라이더에 다른 컬라이더가 들어왔을 때 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
@@ -21,6 +22,7 @@ public class Trap : MonoBehaviour
             }
         }
     }
+    // 내 게임 오브젝트가 가지고 있는 트리거로 설정된 컬라이더에 다른 컬라이더가 나갔을 때
     private void OnTriggerExit(Collider other)
     {
         if(other.CompareTag("Player"))

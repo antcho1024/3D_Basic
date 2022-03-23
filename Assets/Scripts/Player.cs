@@ -42,9 +42,9 @@ public class Player : MonoBehaviour, IDead
     */
     private void FixedUpdate() 
     {
-        //
+        // 현재 위치 + 캐릭터가 바라보는 방향으로 1초에 moveSpeed씩 이동
         rigid.MovePosition(rigid.position + transform.forward * moveInput * moveSpeed * Time.fixedDeltaTime); //  현재위치 + 움직이고픈 정도 
-        //
+        // 현재 각도 * 추가각도
         rigid.MoveRotation(rigid.rotation * Quaternion.AngleAxis(spinInput*spinSpeed*Time.fixedDeltaTime, Vector3.up));
     }
 
@@ -71,28 +71,28 @@ public class Player : MonoBehaviour, IDead
     }
     public void OnDead()
     {
-        if(isAlive)
+        if (isAlive)
         {
             Debug.Log("Player Die");
             // 사망 연출
 
             //rigid.AddTorque(new Vector3(-90.0f,0,0)*10.0f);
-            rigid.constraints = RigidbodyConstraints.None; 
+            rigid.constraints = RigidbodyConstraints.None;
             rigid.drag = 0; // 마찰력 0으로
             rigid.angularDrag = 0.05f;
             //rigid.AddForce(-transform.forward * 3.0f);
-            rigid.AddForceAtPosition(-transform.forward*3.0f, transform.position+new Vector3(0,1.5f,0)); //뒤방향으로. 글고 피봇이 발에 있어서 1.5 높은 지점 밀어줌
+            rigid.AddForceAtPosition(-transform.forward * 3.0f, transform.position + new Vector3(0, 1.5f, 0)); //뒤방향으로. 글고 피봇이 발에 있어서 1.5 높은 지점 밀어줌
             //collider.radius = 0.2f;
-            isAlive= false;
+
+            // 중복 사망 방지
+            isAlive = false;
+
+            // 죽었을 때 이동 처리 안함 
+            spinInput = 0;
+            moveInput = 0;
+            anim.SetBool("isMove", false);
         }
         
-
-        // 중복 사망 방지
-
-        // 죽었을 때 이동 처리 안함 
-        spinInput = 0;
-        moveInput = 0;
-        anim.SetBool("isMove",false);
     }
     
 }
