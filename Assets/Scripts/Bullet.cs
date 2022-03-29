@@ -19,7 +19,8 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         //rigid.velocity = new Vector3(0, 0, speed);
-        rigid.velocity = Vector3.forward * speed;   // 물체의 이동 방향과 속도 설정
+        //rigid.velocity = Vector3.forward * speed; // 이렇게 하면 월드 좌표 기준 앞으로 감 (총구 방향이 어디든 한 방향으로만 날라감)
+        rigid.velocity = transform.forward * speed;// 물체의 이동 방향과 속도 설정
     }
 
     private void OnCollisionEnter(Collision collision)
