@@ -13,9 +13,9 @@ public class TraceTurret : MonoBehaviour
 
     public float fireAngle = 5.0f;
     public float smoothness = 3.0f;
-
+     
     IEnumerator shotSave;                   // 코루틴용 IEnumerator 저장
-
+    
     Transform target = null;
 
     //private void Awake()
@@ -98,7 +98,7 @@ public class TraceTurret : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if(other.gameObject.CompareTag("Player"))
         {
             target = other.transform;
         }
@@ -108,7 +108,7 @@ public class TraceTurret : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            target = null;
+            target = null;            
         }
     }
 }
